@@ -15,7 +15,9 @@ def lancer_de(nb_faces, nb_lancers):
 
 # Exemple d'utilisation :
 if __name__ == "__main__":
-    nb_faces = 6
-    nb_lancers = 10
-    lancers, total = lancer_de(nb_faces, nb_lancers)
+    lancers, total = lancer_de(2, 5)
     slowprint (f"Dégâts totaux : {total}",delay = 0.05)
+
+
+
+
