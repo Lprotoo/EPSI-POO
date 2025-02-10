@@ -1,7 +1,9 @@
 from slprint.slowprint import slowprint
 import random
+from random import randint
 import os
 from personnages import Master, Servant, Personnage
+from gestion_de import lancer_de
 
 master = ["Emiya Kiritsugu", "Kotomine Kirei", "Tohsaka Tokiomi", "Matou Kariya", "Waver Velvet", "Kayneth El-Melloi Archibald", "Uryu Ryunosuke"]
 servantJeu = ["Saber (Artoria Pendragon)", "Assassin (Les Hashashin)", "Archer (Gilgamesh)", "Berserker (Lancelot du Lac)", "Rider (Iskandar, Alexandre le Grand)", "Lancer (Diarmuid Ua Duibhne)", "Caster (Gilles de Rais)" ]
@@ -20,14 +22,14 @@ def clear_terminal():
 
 clear_terminal()
 
-slowprint ("Bienvenue, veuillez choisir un master parmis la liste :\n", delay = 0.03, yoyo = False, vertical = False)
+slowprint ("Bienvenue, veuillez choisir un master parmis la liste :\n", delay = 0.01, yoyo = False, vertical = False)
 listeFonction(master)
 masterChoix = int(input("\n >"))
 
-slowprint (f"Bienvenue {master[masterChoix-1]}. Vous allez participez à la guerre du Saint Graal. Pour se faire, un ou plusieurs servant(s) va ou vont être invoqué pour se battre à vos cotés. Voici qui ils sont :", delay = 0.03, yoyo = False, vertical = False)
+slowprint (f"Bienvenue {master[masterChoix-1]}. Vous allez participez à la guerre du Saint Graal. Pour se faire, un ou plusieurs servant(s) va ou vont être invoqué pour se battre à vos cotés. Voici qui ils sont :", delay = 0.01, yoyo = False, vertical = False)
 listeFonction(servantJeu)
 
-slowprint(f"\nVeuillez choisir le nombre de servant que vous allez avoir et que vous allez affronter (max 3).", delay = 0.03, yoyo = False, vertical = False)
+slowprint(f"\nVeuillez choisir le nombre de servant que vous allez avoir et que vous allez affronter (max 3).", delay = 0.01, yoyo = False, vertical = False)
 nombre = int(input("\n >"))
 
 for i in range(nombre):
@@ -41,56 +43,58 @@ for i in range (nombre):
 
 for val in servantJoueur1:
     if val == "Saber (Artoria Pendragon)":
-        Saber = Servant("Saber", 120, 90, 20, 30, "1d18")
+        Saber = Servant("Saber", 120, 90, 20, 30, [3, 18])
         servantStocker1.append(Saber)
     elif val == "Assassin (Les Hashashin)":
-        Assassin = Servant("Assassin",80, 60, 10, 10, "1d14")
+        Assassin = Servant("Assassin",80, 60, 10, 10, [3, 21])
         servantStocker1.append(Assassin)
     elif val == "Archer (Gilgamesh)":
-        Archer = Servant("Archer",90, 70, 15, 10, "1d20")
+        Archer = Servant("Archer",90, 70, 15, 10, [3, 17])
         servantStocker1.append(Archer)
     elif val == "Berserker (Lancelot du Lac)":
-        Berserker = Servant("Berserker",110, 70, 10, 10, "1d20")
+        Berserker = Servant("Berserker",110, 70, 10, 10, [3, 16])
         servantStocker1.append(Berserker)
     elif val == "Rider (Iskandar, Alexandre le Grand)":
-        Rider = Servant("Rider",150, 60, 10, 30, "1d20")
+        Rider = Servant("Rider",150, 60, 10, 30, [3, 17])
         servantStocker1.append(Rider)
     elif val == "Lancer (Diarmuid Ua Duibhne)":
-        Lancer = Servant("Lancer",120, 80, 15, 20, "1d20")
+        Lancer = Servant("Lancer",120, 80, 15, 20, [3, 15])
         servantStocker1.append(Lancer)
     elif val == "Caster (Gilles de Rais)":
-        Caster = Servant("Caster",80, 60, 5, 50, "1d14")
+        Caster = Servant("Caster",80, 60, 5, 50, [3, 19])
         servantStocker1.append(Caster)
 
 for val in servantJoueur2:
     if val == "Saber (Artoria Pendragon)":
-        Saber = Servant("Saber", 120, 90, 20, 30, "1d18")
+        Saber = Servant("Saber", 120, 90, 20, 30, [3, 18])
         servantStocker2.append(Saber)
     elif val == "Assassin (Les Hashashin)":
-        Assassin = Servant("Assassin",80, 60, 10, 10, "1d14")
+        Assassin = Servant("Assassin",80, 60, 10, 10, [3, 21])
         servantStocker2.append(Assassin)
     elif val == "Archer (Gilgamesh)":
-        Archer = Servant("Archer",90, 70, 15, 10, "1d20")
+        Archer = Servant("Archer",90, 70, 15, 10, [3, 17])
         servantStocker2.append(Archer)
     elif val == "Berserker (Lancelot du Lac)":
-        Berserker = Servant("Berserker",110, 70, 10, 10, "1d20")
+        Berserker = Servant("Berserker",110, 70, 10, 10, [3, 16])
         servantStocker2.append(Berserker)
     elif val == "Rider (Iskandar, Alexandre le Grand)":
-        Rider = Servant("Rider",150, 60, 10, 30, "1d20")
+        Rider = Servant("Rider",150, 60, 10, 30, [3, 17])
         servantStocker2.append(Rider)
     elif val == "Lancer (Diarmuid Ua Duibhne)":
-        Lancer = Servant("Lancer",120, 80, 15, 20, "1d20")
+        Lancer = Servant("Lancer",120, 80, 15, 20, [3, 15])
         servantStocker2.append(Lancer)
     elif val == "Caster (Gilles de Rais)":
-        Caster = Servant("Caster",80, 60, 5, 50, "1d14")
+        Caster = Servant("Caster",80, 60, 5, 50, [3, 19])
         servantStocker2.append(Caster)
 
-slowprint(f"\nVoici les servants qui vous accompagnerons :", delay = 0.03, yoyo = False, vertical = False)
+slowprint(f"\nVoici les servants qui vous accompagnerons :", delay = 0.01, yoyo = False, vertical = False)
 for val in servantStocker1:
+    val.artefacts(randint(0, 4))
     print(f"\n {val}")
           
-slowprint(f"\nEt voici les servants qui vous affronteront :", delay = 0.03, yoyo = False, vertical = False)
+slowprint(f"\nEt voici les servants qui vous affronteront :", delay = 0.01, yoyo = False, vertical = False)
 for val in servantStocker2:
+    val.artefacts(randint(0, 4))
     print(f"\n {val}")
 
 # Test fonction combat
@@ -99,7 +103,7 @@ clear_terminal()
 def combat(attaquant, cibles):
     actions = ["attaque normale", "attaque spéciale (coute 10 de mana)"]
     slowprint(f"\nC'est au tour de {attaquant.nom} d'attaquer ", delay = 0.03, yoyo = False, vertical = False)
-    print(f"\npv : {attaquant.pv} attaque : {attaquant.att} mana : {attaquant.mana}")
+    print(f"\npv : {attaquant.pv} | attaque : {attaquant.att} | mana : {attaquant.mana} | artéfact : {attaquant.arte}")
     listeFonction(actions)
     choix1 = int(input("\n >"))
     slowprint(f"\nChoisissez qui vous voulez attaquer", delay = 0.03, yoyo = False, vertical = False)
@@ -144,6 +148,7 @@ def tour():
 
     
 
+tour()
 tour()
 tour()
 
