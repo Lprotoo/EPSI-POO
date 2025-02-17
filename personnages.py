@@ -1,4 +1,5 @@
 from gestion_de import lancer_de
+import random
 
 class Personnage:
     def __init__(self, nom, pv):
@@ -9,9 +10,9 @@ class Personnage:
 
 
 class Master(Personnage):
-    def __init__(self,nom, pv, bonus):
+    def __init__(self,nom, pv, idbonus):
         super().__init__(nom,pv)
-        self.bonus = bonus
+        self.idbonus = idbonus #non utilisé car pas d'idée
 
 class Servant(Personnage):
     def __init__(self, nom, pv, att, red, mana, chance):
@@ -59,11 +60,26 @@ class Servant(Personnage):
 
     def attaque(self, cible):
         if self.pv < 0:
-            self.compteur -= 1
-            if self.compteur == 0:
-                self.pv = 50
-                self.compteur = 5
-            pass
+            self.etat = "mort"
+        else:
+            des = lancer_de(self.chance[1], self.chance[0])
+            if des[1] < 20:
+                multi = 0.5
+                print("échec")
+            elif des[1] > 45:
+                multi = 1.5
+                print("coup critique")
+            else:
+                multi = 1
+                print("normal")
+
+            dgt = (self.att * multi) - cible.red
+            print(f"{self.nom} attaque {cible.nom} avec une attaque faisant {dgt} de dégats")
+            self.mana = self.mana + 10
+            cible.pv = cible.pv - dgt
+
+
+    def attaquemaster(self, cible):
         des = lancer_de(self.chance[1], self.chance[0])
         if des[1] < 20:
             multi = 0.5
@@ -75,9 +91,8 @@ class Servant(Personnage):
             multi = 1
             print("normal")
 
-        dgt = (self.att * multi) - cible.red
+        dgt = self.att * multi
         print(f"{self.nom} attaque {cible.nom} avec une attaque faisant {dgt} de dégats")
-        self.mana = self.mana + 10
         cible.pv = cible.pv - dgt
 
     def competence(self, cible):
@@ -88,4 +103,59 @@ class Servant(Personnage):
         cible.pv = cible.pv - dgt
 
     def ulti(self, cible):
-        pass
+        if self.mana >= 50:
+            self.mana -= 50
+            if self.nom == "Saber":
+                dgt = random.randint(120, 160)
+                print(f"{self.nom} utilise Excalibur et inflige {dgt} dégâts à {cible.nom}!")
+                cible.pv -= dgt
+                cible.att -= 15  # Réduction de l'attaque de l'ennemi
+                print(f"{cible.nom} est affaibli : -15 attaque.")
+
+            elif self.nom == "Assassin":
+                dgt = random.randint(110, 150)
+                print(f"{self.nom} utilise Tsubame Gaeshi et inflige {dgt} dégâts à {cible.nom}!")
+                cible.pv -= dgt
+                cible.red -= 10  # Réduction de la réduction de dégâts de l'ennemi
+                print(f"{cible.nom} est affaibli : -10 réduction de dégâts.")
+
+            elif self.nom == "Archer":
+                dgt = random.randint(100, 140)
+                print(f"{self.nom} utilise Unlimited Blade Works et inflige {dgt} dégâts à {cible.nom}!")
+                cible.pv -= dgt
+                cible.chance[1] -= 10  # Réduction de la chance de l'ennemi
+                print(f"{cible.nom} est affaibli : -10 chance.")
+
+            elif self.nom == "Berserker":
+                dgt = random.randint(130, 170)
+                print(f"{self.nom} utilise God Hand et inflige {dgt} dégâts à {cible.nom}!")
+                cible.pv -= dgt
+                cible.pv -= 20  # Réduction supplémentaire des PV de l'ennemi
+                print(f"{cible.nom} est affaibli : -20 PV supplémentaires.")
+
+            elif self.nom == "Rider":
+                dgt = random.randint(110, 150)
+                print(f"{self.nom} utilise Ionioi Hetairoi et inflige {dgt} dégâts à {cible.nom}!")
+                cible.pv -= dgt
+                cible.att -= 10  # Réduction de l'attaque de l'ennemi
+                cible.red -= 5  # Réduction de la réduction de dégâts de l'ennemi
+                print(f"{cible.nom} est affaibli : -10 attaque, -5 réduction de dégâts.")
+
+            elif self.nom == "Lancer":
+                dgt = random.randint(120, 160)
+                print(f"{self.nom} utilise Gae Bolg et inflige {dgt} dégâts à {cible.nom}!")
+                cible.pv -= dgt
+                cible.chance[1] -= 15  # Réduction de la chance de l'ennemi
+                print(f"{cible.nom} est affaibli : -15 chance.")
+
+            elif self.nom == "Caster":
+                dgt = random.randint(100, 140)
+                print(f"{self.nom} utilise Rule Breaker et inflige {dgt} dégâts à {cible.nom}!")
+                cible.pv -= dgt
+                cible.mana -= 20  # Réduction du mana de l'ennemi
+                print(f"{cible.nom} est affaibli : -20 mana.")
+
+            else:
+                print(f"{self.nom} n'a pas d'ultime défini.")
+        else:
+            print(f"{self.nom} n'a pas assez de mana pour utiliser son ultime.")
