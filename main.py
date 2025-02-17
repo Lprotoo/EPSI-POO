@@ -5,7 +5,7 @@ import os
 from personnages import Master, Servant, Personnage
 from gestion_de import lancer_de
 
-master = ["Emiya Kiritsugu", "Kotomine Kirei", "Tohsaka Tokiomi", "Matou Kariya", "Waver Velvet", "Kayneth El-Melloi Archibald", "Uryu Ryunosuke"]
+lmaster = ["Emiya Kiritsugu", "Kotomine Kirei", "Tohsaka Tokiomi", "Matou Kariya", "Waver Velvet", "Kayneth El-Melloi Archibald", "Uryu Ryunosuke"]
 servantJeu = ["Saber (Artoria Pendragon)", "Assassin (Les Hashashin)", "Archer (Gilgamesh)", "Berserker (Lancelot du Lac)", "Rider (Iskandar, Alexandre le Grand)", "Lancer (Diarmuid Ua Duibhne)", "Caster (Gilles de Rais)" ]
 servantJoueur1 = []
 servantStocker1 = []
@@ -23,11 +23,56 @@ def clear_terminal():
 clear_terminal()
 
 slowprint ("Bienvenue, veuillez choisir un master parmis la liste :\n", delay = 0.01, yoyo = False, vertical = False)
-listeFonction(master)
-masterChoix = int(input("\n >"))
+listeFonction(lmaster)
+mchoix = int(input("\n >"))
 
-slowprint (f"Bienvenue {master[masterChoix-1]}. Vous allez participez à la guerre du Saint Graal. Pour se faire, un ou plusieurs servant(s) va ou vont être invoqué pour se battre à vos cotés. Voici qui ils sont :", delay = 0.01, yoyo = False, vertical = False)
+
+
+# Vérifie que le choix est valide
+if 1 <= mchoix <= len(lmaster):
+    if mchoix == 1:
+        master = Master(lmaster[0],100, 1)
+    elif mchoix == 2:
+        master = Master(lmaster[1],100, 2)
+    elif mchoix == 3:
+        master = Master(lmaster[2],100, 3)
+    elif mchoix == 4:
+        master = Master(lmaster[3],100, 4)
+    elif mchoix == 5:
+        master = Master(lmaster[4],100, 5)
+    elif mchoix == 6:
+        master = Master(lmaster[5],100, 6)
+    elif mchoix == 7:
+        master = Master(lmaster[6],100, 7)
+
+else:
+    print("Choix invalide. Veuillez entrer un nombre entre 1 et 7.")
+
+mchoix2 = randint(0, 6)
+
+if mchoix == mchoix2:
+    mchoix2 += 1
+if mchoix2 == 1:
+    master2 = Master(lmaster[0],100, 1)
+elif mchoix2 == 2:
+    master2 = Master(lmaster[1],100, 2)
+elif mchoix2 == 3:
+    master2 = Master(lmaster[2],100, 3)
+elif mchoix2 == 4:
+    master2 = Master(lmaster[3],100, 4)
+elif mchoix2 == 5:
+    master2 = Master(lmaster[4],100, 5)
+elif mchoix2 == 6:
+    master2 = Master(lmaster[5],100, 6)
+elif mchoix2 == 7:
+    master2 = Master(lmaster[6],100, 7)
+
+
+
+slowprint (f"Bienvenue {master.nom}. Vous allez participez à la guerre du Saint Graal. Pour se faire, un ou plusieurs servant(s) va ou vont être invoqué pour se battre à vos cotés. Voici qui ils sont :", delay = 0.01, yoyo = False, vertical = False)
 listeFonction(servantJeu)
+
+slowprint(f"\nVous allez affronter {master2.nom}", delay = 0.01, yoyo = False, vertical = False)
 
 slowprint(f"\nVeuillez choisir le nombre de servant que vous allez avoir et que vous allez affronter (max 3).", delay = 0.01, yoyo = False, vertical = False)
 nombre = int(input("\n >"))
@@ -39,7 +84,7 @@ for i in range (nombre):
     servantJoueur2.append(random.choice(servantJeu))
     servantJeu.remove(servantJoueur2[i])
 
-# Voici les instanciations des servants avec leur statistiques. Respectivement : pv, attaque, reduction de dégâts, mana, chance
+
 
 for val in servantJoueur1:
     if val == "Saber (Artoria Pendragon)":
@@ -89,7 +134,8 @@ for val in servantJoueur2:
 
 slowprint(f"\nVoici les servants qui vous accompagnerons :", delay = 0.01, yoyo = False, vertical = False)
 for val in servantStocker1:
-    val.artefacts(randint(0, 4))
+    slowprint(f"\nChoississez un artefact pour {val.nom} :", delay = 0.01, yoyo = False, vertical = False)
+    val.artefacts(int(input()))
     print(f"\n {val}")
           
 slowprint(f"\nEt voici les servants qui vous affronteront :", delay = 0.01, yoyo = False, vertical = False)
@@ -101,24 +147,34 @@ for val in servantStocker2:
 clear_terminal()
 
 def combat(attaquant, cibles):
-    actions = ["attaque normale", "attaque spéciale (coute 10 de mana)"]
-    slowprint(f"\nC'est au tour de {attaquant.nom} d'attaquer ", delay = 0.03, yoyo = False, vertical = False)
-    print(f"\npv : {attaquant.pv} | attaque : {attaquant.att} | mana : {attaquant.mana} | artéfact : {attaquant.arte}")
-    listeFonction(actions)
-    choix1 = int(input("\n >"))
-    slowprint(f"\nChoisissez qui vous voulez attaquer", delay = 0.03, yoyo = False, vertical = False)
-    for val in cibles:
-        print(f"\n {val.nom}")
-    choix2 = int(input("\n >"))
-    if choix1 == 1:
-        attaquant.attaque(cibles[choix2-1])
-    elif choix1 == 2:
-        if attaquant.mana > 10:
-            attaquant.competence(cibles[choix2-1])
-        else:
-            print("vous n'avez pas assez de mana, l'attaque échoue")
-    if cibles[choix2-1].pv <= 0:
+    if attaquant.pv > 0:
+        actions = ["attaque normale", "attaque spéciale (coute 10 de mana)"]
+        slowprint(f"\nC'est au tour de {attaquant.nom} d'attaquer ", delay = 0.03, yoyo = False, vertical = False)
+        print(f"\npv : {attaquant.pv} | attaque : {attaquant.att} | mana : {attaquant.mana} | artéfact : {attaquant.arte}")
+        listeFonction(actions)
+        choix1 = int(input("\n >"))
+        slowprint(f"\nChoisissez qui vous voulez attaquer", delay = 0.03, yoyo = False, vertical = False)
+        for val in cibles:
+            print(f"\n {val.nom} | pv : {val.pv}")
+        choix2 = int(input("\n >"))
+        if choix1 == 1:
+            attaquant.attaque(cibles[choix2-1])
+        elif choix1 == 2:
+            if attaquant.mana > 10:
+                attaquant.competence(cibles[choix2-1])
+            else:
+                print("vous n'avez pas assez de mana, l'attaque échoue")
+        if cibles[choix2-1].pv <= 0:
+            print(f"le servant {cibles[choix2-1].nom} est tombé au combat, vous allez donc attaquer une fois le master adverse")
+            input()
+            if cibles == servantStocker2:
+                attaquant.attaquemaster(master2)
+            else:
+                attaquant.attaquemaster(master)
+    else:
         pass
+
+
     
 
     
@@ -144,13 +200,13 @@ def tour():
     else:
         combat(servantStocker1[0], servantStocker2)
         combat(servantStocker2[0], servantStocker1)
-    
 
-    
 
-tour()
-tour()
-tour()
+
+
+boucle = 1
+while boucle == 1:
+    tour()
 
 
 
