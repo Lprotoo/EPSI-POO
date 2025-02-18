@@ -74,6 +74,8 @@ listeFonction(servantJeu)
 
 slowprint(f"\nVous allez affronter {master2.nom}", delay = 0.01, yoyo = False, vertical = False)
 
+
+
 slowprint(f"\nVeuillez choisir le nombre de servant que vous allez avoir et que vous allez affronter (max 3).", delay = 0.01, yoyo = False, vertical = False)
 nombre = int(input("\n >"))
 
@@ -133,9 +135,12 @@ for val in servantJoueur2:
         servantStocker2.append(Caster)
 
 slowprint(f"\nVoici les servants qui vous accompagnerons :", delay = 0.01, yoyo = False, vertical = False)
+listearte = ["anneau rouge", "anneau vert", "anneau bleu", "anneau blanc", "anneau noir"]
+listeFonction(listearte)
 for val in servantStocker1:
     slowprint(f"\nChoississez un artefact pour {val.nom} :", delay = 0.01, yoyo = False, vertical = False)
-    val.artefacts(int(input()))
+    choixarte = int(input()) + 1
+    val.artefacts(choixarte)
     print(f"\n {val}")
           
 slowprint(f"\nEt voici les servants qui vous affronteront :", delay = 0.01, yoyo = False, vertical = False)
@@ -148,13 +153,16 @@ clear_terminal()
 
 def combat(attaquant, cibles):
     if attaquant.pv > 0:
-        actions = ["attaque normale", "attaque spéciale (coute 10 de mana)"]
+        actions = ["attaque normale", "attaque spéciale (coute 10 de mana)", "attaque ultime (coute 50 de mana)"]
         slowprint(f"\nC'est au tour de {attaquant.nom} d'attaquer ", delay = 0.03, yoyo = False, vertical = False)
         print(f"\npv : {attaquant.pv} | attaque : {attaquant.att} | mana : {attaquant.mana} | artéfact : {attaquant.arte}")
         listeFonction(actions)
         choix1 = int(input("\n >"))
         slowprint(f"\nChoisissez qui vous voulez attaquer", delay = 0.03, yoyo = False, vertical = False)
         for val in cibles:
+            pvdisplay = val.pv
+            if pvdisplay <= 0:
+                pvdisplay = "mort"
             print(f"\n {val.nom} | pv : {val.pv}")
         choix2 = int(input("\n >"))
         if choix1 == 1:
@@ -164,6 +172,8 @@ def combat(attaquant, cibles):
                 attaquant.competence(cibles[choix2-1])
             else:
                 print("vous n'avez pas assez de mana, l'attaque échoue")
+        elif choix1 == 3:
+            attaquant.ulti(cibles[choix2-1])
         if cibles[choix2-1].pv <= 0:
             print(f"le servant {cibles[choix2-1].nom} est tombé au combat, vous allez donc attaquer une fois le master adverse")
             input()
@@ -206,7 +216,18 @@ def tour():
 
 boucle = 1
 while boucle == 1:
-    tour()
+    if master.pv <= 0:
+        slowprint(f"\nLe master {master2.nom} a remporté le combat", delay = 0.03, yoyo = False, vertical = False)
+        input()
+        boucle = 0
+    elif master2.pv <= 0:
+        slowprint(f"\nLe master {master.nom} a remporté le combat", delay = 0.03, yoyo = False, vertical = False)
+        input()
+        boucle = 0
+    else:
+        tour()
+        
+
 
 
 
@@ -222,9 +243,7 @@ while boucle == 1:
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-print("Appuyez sur Entrée pour passer au résumé du combat : ")
-input()
-clear_terminal()
+
 
 
 
