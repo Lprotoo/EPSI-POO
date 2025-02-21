@@ -97,10 +97,11 @@ class Servant(Personnage):
 
     def competence(self, cible):
         dgt = self.att - cible.red
-        dgt = dgt * 1.3
         print(f"{self.nom} attaque {cible.nom} avec une attaque faisant {dgt} de dégats")
         self.mana = self.mana - 10
         cible.pv = cible.pv - dgt
+        self.pv += 10
+        self.att += 10
 
     def ulti(self, cible):
         if self.mana >= 50:
@@ -109,53 +110,51 @@ class Servant(Personnage):
                 dgt = random.randint(120, 160)
                 print(f"{self.nom} utilise Excalibur et inflige {dgt} dégâts à {cible.nom}!")
                 cible.pv -= dgt
-                cible.att -= 15  # Réduction de l'attaque de l'ennemi
+                cible.att -= 15  
                 print(f"{cible.nom} est affaibli : -15 attaque.")
 
             elif self.nom == "Assassin":
                 dgt = random.randint(110, 150)
                 print(f"{self.nom} utilise Tsubame Gaeshi et inflige {dgt} dégâts à {cible.nom}!")
                 cible.pv -= dgt
-                cible.red -= 10  # Réduction de la réduction de dégâts de l'ennemi
+                cible.red -= 10  
                 print(f"{cible.nom} est affaibli : -10 réduction de dégâts.")
 
             elif self.nom == "Archer":
                 dgt = random.randint(100, 140)
                 print(f"{self.nom} utilise Unlimited Blade Works et inflige {dgt} dégâts à {cible.nom}!")
                 cible.pv -= dgt
-                cible.chance[1] -= 10  # Réduction de la chance de l'ennemi
+                cible.chance[1] -= 10  
                 print(f"{cible.nom} est affaibli : -10 chance.")
 
             elif self.nom == "Berserker":
                 dgt = random.randint(130, 170)
                 print(f"{self.nom} utilise God Hand et inflige {dgt} dégâts à {cible.nom}!")
                 cible.pv -= dgt
-                cible.pv -= 20  # Réduction supplémentaire des PV de l'ennemi
+                cible.pv -= 20  
                 print(f"{cible.nom} est affaibli : -20 PV supplémentaires.")
 
             elif self.nom == "Rider":
                 dgt = random.randint(110, 150)
                 print(f"{self.nom} utilise Ionioi Hetairoi et inflige {dgt} dégâts à {cible.nom}!")
                 cible.pv -= dgt
-                cible.att -= 10  # Réduction de l'attaque de l'ennemi
-                cible.red -= 5  # Réduction de la réduction de dégâts de l'ennemi
+                cible.att -= 10  
+                cible.red -= 5  
                 print(f"{cible.nom} est affaibli : -10 attaque, -5 réduction de dégâts.")
 
             elif self.nom == "Lancer":
                 dgt = random.randint(120, 160)
                 print(f"{self.nom} utilise Gae Bolg et inflige {dgt} dégâts à {cible.nom}!")
                 cible.pv -= dgt
-                cible.chance[1] -= 15  # Réduction de la chance de l'ennemi
+                cible.chance[1] -= 15  
                 print(f"{cible.nom} est affaibli : -15 chance.")
 
             elif self.nom == "Caster":
                 dgt = random.randint(100, 140)
                 print(f"{self.nom} utilise Rule Breaker et inflige {dgt} dégâts à {cible.nom}!")
                 cible.pv -= dgt
-                cible.mana -= 20  # Réduction du mana de l'ennemi
+                cible.mana -= 20  
                 print(f"{cible.nom} est affaibli : -20 mana.")
 
-            else:
-                print(f"{self.nom} n'a pas d'ultime défini.")
         else:
             print(f"{self.nom} n'a pas assez de mana pour utiliser son ultime.")
