@@ -24,7 +24,11 @@ clear_terminal()
 
 slowprint ("Bienvenue, veuillez choisir un master parmis la liste :\n", delay = 0.01, yoyo = False, vertical = False)
 listeFonction(lmaster)
-mchoix = int(input("\n >"))
+mchoix = input("\n >")
+if mchoix == "1" or mchoix == "2" or mchoix == "3" or mchoix == "4" or mchoix == "5" or mchoix == "6" or mchoix == "7": # Gestion des erreurs
+    mchoix = int(mchoix)
+else:
+    mchoix = 1
 
 
 
@@ -50,6 +54,7 @@ else:
 
 mchoix2 = randint(0, 6)
 
+
 if mchoix == mchoix2:
     mchoix2 += 1
 if mchoix2 == 1:
@@ -66,6 +71,8 @@ elif mchoix2 == 6:
     master2 = Master(lmaster[5],100, 6)
 elif mchoix2 == 7:
     master2 = Master(lmaster[6],100, 7)
+elif mchoix2 == 8:
+    master2 = Master(lmaster[0],100, 1)
 
 
 
@@ -77,7 +84,11 @@ slowprint(f"\nVous allez affronter {master2.nom}", delay = 0.01, yoyo = False, v
 
 
 slowprint(f"\nVeuillez choisir le nombre de servant que vous allez avoir et que vous allez affronter (max 3).", delay = 0.01, yoyo = False, vertical = False)
-nombre = int(input("\n >"))
+nombre = input("\n >")
+if nombre == "1" or nombre == "2" or nombre == "3":
+    nombre = int(nombre)
+else:
+    nombre = 1
 
 for i in range(nombre):
     servantJoueur1.append(random.choice(servantJeu))
@@ -139,14 +150,22 @@ listearte = ["anneau rouge", "anneau vert", "anneau bleu", "anneau blanc", "anne
 listeFonction(listearte)
 for val in servantStocker1:
     slowprint(f"\nChoississez un artefact pour {val.nom} :", delay = 0.01, yoyo = False, vertical = False)
-    choixarte = int(input()) + 1
+    choixarte = input()
+    if choixarte == "1" or choixarte == "2" or choixarte == "3" or choixarte == "4" or choixarte == "5":
+        choixarte = int(choixarte) - 1
+    else:
+        choixarte = randint(0, 4)
     val.artefacts(choixarte)
     print(f"\n {val}")
+
+input()
           
 slowprint(f"\nEt voici les servants qui vous affronteront :", delay = 0.01, yoyo = False, vertical = False)
 for val in servantStocker2:
     val.artefacts(randint(0, 4))
     print(f"\n {val}")
+
+input()
 
 # Test fonction combat
 clear_terminal()
@@ -157,18 +176,36 @@ def combat(attaquant, cibles):
         slowprint(f"\nC'est au tour de {attaquant.nom} d'attaquer ", delay = 0.03, yoyo = False, vertical = False)
         print(f"\npv : {attaquant.pv} | attaque : {attaquant.att} | mana : {attaquant.mana} | artéfact : {attaquant.arte}")
         listeFonction(actions)
-        choix1 = int(input("\n >"))
+        print(f"\nvos pv : {master.pv} | pv du master adverse : {master2.pv}")
+        choix1 = input("\n >")
+        if choix1 == "1" or choix1 == "2" or choix1 == "3": # Gestion erreur
+            choix1 = int(choix1)
+        else: 
+            choix1 = 1
         slowprint(f"\nChoisissez qui vous voulez attaquer", delay = 0.03, yoyo = False, vertical = False)
         for val in cibles:
-            pvdisplay = val.pv
-            if pvdisplay <= 0:
-                pvdisplay = "mort"
             print(f"\n {val.nom} | pv : {val.pv}")
-        choix2 = int(input("\n >"))
+        choix2 = input("\n >")
+        if len(cibles) == 1: # Gestion erreur
+            if choix2 == "1":
+                choix2 = int(choix2)
+            else:
+                choix2 = 1
+        elif len(cibles) == 2:
+            if choix2 == "1" or choix2 == "2":
+                choix2 = int(choix2)
+            else:
+                choix2 = 1    
+        elif len(cibles) == 3:
+            if choix2 == "1" or choix2 == "2" or choix2 == "3":
+                choix2 = int(choix2)
+            else:
+                choix2 = 1          
+
         if choix1 == 1:
             attaquant.attaque(cibles[choix2-1])
         elif choix1 == 2:
-            if attaquant.mana > 10:
+            if attaquant.mana > 20:
                 attaquant.competence(cibles[choix2-1])
             else:
                 print("vous n'avez pas assez de mana, l'attaque échoue")
@@ -181,6 +218,7 @@ def combat(attaquant, cibles):
                 attaquant.attaquemaster(master2)
             else:
                 attaquant.attaquemaster(master)
+            cibles[choix2-1].pv = 75 #On ressucite le servant
     else:
         pass
 
@@ -240,8 +278,7 @@ while boucle == 1:
 #print(servantStocker2[1].pv)
 
 
-def clear_terminal():
-    os.system('cls' if os.name == 'nt' else 'clear')
+
 
 
 
