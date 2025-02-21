@@ -30,8 +30,6 @@ if mchoix == "1" or mchoix == "2" or mchoix == "3" or mchoix == "4" or mchoix ==
 else:
     mchoix = 1
 
-
-
 # Vérifie que le choix est valide
 if 1 <= mchoix <= len(lmaster):
     if mchoix == 1:
@@ -54,7 +52,6 @@ else:
 
 mchoix2 = randint(0, 6)
 
-
 if mchoix == mchoix2:
     mchoix2 += 1
 if mchoix2 == 1:
@@ -74,14 +71,10 @@ elif mchoix2 == 7:
 elif mchoix2 == 8:
     master2 = Master(lmaster[0],100, 1)
 
-
-
 slowprint (f"Bienvenue {master.nom}. Vous allez participez à la guerre du Saint Graal. Pour se faire, un ou plusieurs servant(s) va ou vont être invoqué pour se battre à vos cotés. Voici qui ils sont :", delay = 0.01, yoyo = False, vertical = False)
 listeFonction(servantJeu)
 
 slowprint(f"\nVous allez affronter {master2.nom}", delay = 0.01, yoyo = False, vertical = False)
-
-
 
 slowprint(f"\nVeuillez choisir le nombre de servant que vous allez avoir et que vous allez affronter (max 3).", delay = 0.01, yoyo = False, vertical = False)
 nombre = input("\n >")
@@ -96,8 +89,6 @@ for i in range(nombre):
 for i in range (nombre):
     servantJoueur2.append(random.choice(servantJeu))
     servantJeu.remove(servantJoueur2[i])
-
-
 
 for val in servantJoueur1:
     if val == "Saber (Artoria Pendragon)":
@@ -145,9 +136,7 @@ for val in servantJoueur2:
         Caster = Servant("Caster",80, 60, 5, 50, [3, 19])
         servantStocker2.append(Caster)
 
-
 clear_terminal()
-
 
 listearte = ["anneau rouge : attaque + 10 | pv - 5 | défense -5", "anneau vert : pv + 20 | attaque -5", "anneau bleu : défense + 10 | pv + 5 | attaque -5 ", "anneau blanc : chance + 5 | attaque -2", "anneau noir : attaque + 20 | défense + 20 | pv - 15 | chance -8"]
 listeFonction(listearte)
@@ -169,16 +158,13 @@ for val in servantStocker1:
 print("\nAppuyez sur entrée pour continuer")
 input()
 
-          
 slowprint(f"\nEt voici le ou les servants qui vous affronteront :", delay = 0.01, yoyo = False, vertical = False)
 for val in servantStocker2:
     val.artefacts(randint(0, 4))
     print(f"\n {val}")
 
-
 print("\nAppuyez sur entrée pour continuer")
 input()
-
 
 clear_terminal()
 
@@ -188,7 +174,7 @@ def combat(attaquant, cibles):
         slowprint(f"\nC'est au tour de {attaquant.nom} d'attaquer ", delay = 0.03, yoyo = False, vertical = False)
         print(f"\npv : {attaquant.pv} | attaque : {attaquant.att} | mana : {attaquant.mana} | artéfact : {attaquant.arte}")
         listeFonction(actions)
-        print(f"\nvos pv : {master.pv} | pv du master adverse : {master2.pv}")
+        print(f"\npv de {master.nom} (vous) : {master.pv} | pv de {master2.nom} (adversaire)  : {master2.pv}")
         choix1 = input("\n >")
         if choix1 == "1" or choix1 == "2" or choix1 == "3": # Gestion erreur
             choix1 = int(choix1)
@@ -225,22 +211,19 @@ def combat(attaquant, cibles):
             attaquant.ulti(cibles[choix2-1])
         if cibles[choix2-1].pv <= 0:
             print(f"le servant {cibles[choix2-1].nom} est tombé au combat, vous allez donc attaquer une fois le master adverse")
+            print("\nAppuyez sur entrée pour continuer")
             input()
             if cibles == servantStocker2:
                 attaquant.attaquemaster(master2)
             else:
                 attaquant.attaquemaster(master)
             cibles[choix2-1].pv = 75 #On ressucite le servant
+            print("\nAppuyez sur entrée pour continuer")
+            input()
     else:
         pass
 
-
-    
-
-    
-
 nb_tours = 0
-
 def tour():
     global nb_tours
     nb_tours += 1
@@ -273,9 +256,6 @@ def tour():
         combat(servantStocker2[0], servantStocker1)
         boucle()
 
-
-
-
 def boucle():
     if master.pv <= 0:
         slowprint(f"\nLe master {master2.nom} a remporté le combat", delay = 0.03, yoyo = False, vertical = False)
@@ -290,33 +270,5 @@ def boucle():
     else:
         return 1
 
-
-
 while boucle() == 1:
     tour()
-
-
-
-
-
-#Tests
-#print(servantStocker2[0].pv)
-#print(servantStocker2[1].pv)
-#servantStocker1[0].attaque(servantStocker2[0])
-#servantStocker1[1].competence(servantStocker2[1])
-#print(servantStocker2[0].pv)
-#print(servantStocker2[1].pv)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
