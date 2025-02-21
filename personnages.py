@@ -55,7 +55,7 @@ class Servant(Personnage):
             self.red += 20
             self.pv -= 15
             self.chance[1] -= 8
-            self.compteur = 5
+ 
 
 
     def attaque(self, cible):
@@ -65,13 +65,13 @@ class Servant(Personnage):
             des = lancer_de(self.chance[1], self.chance[0])
             if des[1] < 20:
                 multi = 0.5
-                print("échec")
+                print("Echec")
             elif des[1] > 45:
                 multi = 1.5
-                print("coup critique")
+                print("Coup critique !")
             else:
                 multi = 1
-                print("normal")
+                print("Réussi !")
 
             dgt = (self.att * multi) - cible.red
             print(f"{self.nom} attaque {cible.nom} avec une attaque faisant {dgt} de dégats")
@@ -83,13 +83,13 @@ class Servant(Personnage):
         des = lancer_de(self.chance[1], self.chance[0])
         if des[1] < 20:
             multi = 0.5
-            print("échec")
+            print("Echec")
         elif des[1] > 45:
             multi = 1.5
-            print("coup critique")
+            print("Coup critique !")
         else:
             multi = 1
-            print("normal")
+            print("Réussi !")
 
         dgt = self.att * multi
         print(f"{self.nom} attaque {cible.nom} avec une attaque faisant {dgt} de dégats")
