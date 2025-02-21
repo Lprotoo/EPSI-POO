@@ -145,8 +145,11 @@ for val in servantJoueur2:
         Caster = Servant("Caster",80, 60, 5, 50, [3, 19])
         servantStocker2.append(Caster)
 
-slowprint(f"\nVoici les servants qui vous accompagnerons :", delay = 0.01, yoyo = False, vertical = False)
-listearte = ["anneau rouge", "anneau vert", "anneau bleu", "anneau blanc", "anneau noir"]
+
+clear_terminal()
+
+
+listearte = ["anneau rouge : attaque + 10 | pv - 5 | défense -5", "anneau vert : pv + 20 | attaque -5", "anneau bleu : défense + 10 | pv + 5 | attaque -5 ", "anneau blanc : chance + 5 | attaque -2", "anneau noir : attaque + 20 | défense + 20 | pv - 15 | chance -8"]
 listeFonction(listearte)
 for val in servantStocker1:
     slowprint(f"\nChoississez un artefact pour {val.nom} :", delay = 0.01, yoyo = False, vertical = False)
@@ -156,23 +159,32 @@ for val in servantStocker1:
     else:
         choixarte = randint(0, 4)
     val.artefacts(choixarte)
+    
+clear_terminal()
+
+slowprint(f"\nVoici le ou les servants qui vous accompagnerons :", delay = 0.01, yoyo = False, vertical = False)
+for val in servantStocker1:
     print(f"\n {val}")
 
+print("\nAppuyez sur entrée pour continuer")
 input()
+
           
-slowprint(f"\nEt voici les servants qui vous affronteront :", delay = 0.01, yoyo = False, vertical = False)
+slowprint(f"\nEt voici le ou les servants qui vous affronteront :", delay = 0.01, yoyo = False, vertical = False)
 for val in servantStocker2:
     val.artefacts(randint(0, 4))
     print(f"\n {val}")
 
+
+print("\nAppuyez sur entrée pour continuer")
 input()
 
-# Test fonction combat
+
 clear_terminal()
 
 def combat(attaquant, cibles):
     if attaquant.pv > 0:
-        actions = ["attaque normale", "attaque spéciale (coute 10 de mana)", "attaque ultime (coute 50 de mana)"]
+        actions = ["attaque normale", "attaque spéciale (coute 20 de mana)", "attaque ultime (coute 50 de mana)"]
         slowprint(f"\nC'est au tour de {attaquant.nom} d'attaquer ", delay = 0.03, yoyo = False, vertical = False)
         print(f"\npv : {attaquant.pv} | attaque : {attaquant.att} | mana : {attaquant.mana} | artéfact : {attaquant.arte}")
         listeFonction(actions)
@@ -235,36 +247,54 @@ def tour():
     print(f"c'est le tour {nb_tours}")
     if nombre == 3:
         combat(servantStocker1[0], servantStocker2)
+        boucle()
         combat(servantStocker2[0], servantStocker1)
+        boucle()
         combat(servantStocker1[1], servantStocker2)
+        boucle()
         combat(servantStocker2[1], servantStocker1)
+        boucle()
         combat(servantStocker1[2], servantStocker2)
+        boucle()
         combat(servantStocker2[2], servantStocker1)
+        boucle()
     elif nombre ==2:
         combat(servantStocker1[0], servantStocker2)
+        boucle()
         combat(servantStocker2[0], servantStocker1)
+        boucle()
         combat(servantStocker1[1], servantStocker2)
+        boucle()
         combat(servantStocker2[1], servantStocker1)
+        boucle()
     else:
         combat(servantStocker1[0], servantStocker2)
+        boucle()
         combat(servantStocker2[0], servantStocker1)
+        boucle()
 
 
 
 
-boucle = 1
-while boucle == 1:
+def boucle():
     if master.pv <= 0:
         slowprint(f"\nLe master {master2.nom} a remporté le combat", delay = 0.03, yoyo = False, vertical = False)
         input()
-        boucle = 0
+        exit()
+        return 0
     elif master2.pv <= 0:
         slowprint(f"\nLe master {master.nom} a remporté le combat", delay = 0.03, yoyo = False, vertical = False)
         input()
-        boucle = 0
+        exit()
+        return 0
     else:
-        tour()
-        
+        return 1
+
+
+
+while boucle() == 1:
+    tour()
+
 
 
 
